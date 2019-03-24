@@ -61,8 +61,8 @@ class ModelAbstractService {
     create(data) {
         return new Promise((resolv, reject) => {
             this.bulkCreate([data])
-                .then(data => {
-                    resolv(data[0])
+                .then(result => {
+                    resolv(result[0])
                 })
                 .catch(reject);
         });
@@ -73,7 +73,7 @@ class ModelAbstractService {
         return new Promise((resolv, reject) => {
             this.get(id)
                 .then(collection => {
-                    let object = this.modelMap(data, collection);
+                    let object = this.modelMap(data, null, null, collection);
                     this.storage.getCollection(this.COLLECTION).then(col => {
 
                         let query = {};
@@ -107,7 +107,7 @@ class ModelAbstractService {
         });
     }
 
-    modelMap(data, model) {
+    modelMap(data, index, array, model) {
         return {
             id: data.id || model.id || uuidV4(),
             name: data.name || model.name,
